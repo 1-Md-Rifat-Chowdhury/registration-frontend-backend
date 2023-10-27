@@ -10,7 +10,7 @@ ap.get('/', (req, res) => {
 
 ap.use(cors())
 ap.use(express.json())
-ap.use(express.urlencoded())
+// ap.use(express.urlencoded())
 
 
 
@@ -26,24 +26,36 @@ async function main() {
         console.log(error.message)
     }
 }
-main().catch(err => console.log(err));
+main()
 
 
 const userSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    phone: Number,
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+    country: {
+        type: String, 
+        required: true
+    },
 })
 
 const User = mongoose.model('user', userSchema);
 
 ap.post('/user', async (req, res) => {
     try {
-        console.log('hited', req.body)
         const addUser = new User({
             ...req.body
-
         })
+        
         const usersData = await addUser.save();
         console.log(usersData)
 
